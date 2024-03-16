@@ -4,6 +4,7 @@ using WebTemplate.ServerAspects.Cors;
 using WebTemplate.ServerAspects.Json;
 using WebTemplate.ServerAspects.Spa;
 using WebTemplate.ServerAspects.Swagger;
+using WebTemplate.ServerAspects.Validation;
 using WebTemplate.Status;
 
 namespace WebTemplate;
@@ -22,6 +23,7 @@ public class AppServer
         new CorsModule(),
         new SwaggerModule(),
         new SpaRoutingModule(),
+        new ValidationModule(),
         new StatusEndpointModule(),
         new ControllersModule(),
     };
