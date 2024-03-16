@@ -10,13 +10,18 @@ namespace WebTemplate;
 
 public class AppServer
 {
+    /// <summary>
+    /// These are all the modules that are loaded. The order is _somewhat_ important since in many situations it is
+    /// relevant which configuration or middleware is applied first and the modules are applied in the order in
+    /// which they appear here.
+    /// </summary>
     private readonly IList<IAppConfigurationModule> _modules = new List<IAppConfigurationModule>
     {
         new JsonModule(),
         new AuthModule(),
         new CorsModule(),
-        new SpaRoutingModule(),
         new SwaggerModule(),
+        new SpaRoutingModule(),
         new StatusEndpointModule(),
         new ControllersModule(),
     };
