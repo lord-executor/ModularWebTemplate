@@ -41,6 +41,15 @@ public class AppServer
         var app = builder.Build();
         app.UseHttpsRedirection();
 
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+        else
+        {
+            app.UseHsts();
+        }
+
         foreach (var appConfigurationModule in _modules)
         {
             appConfigurationModule.ConfigureApplication(app);
