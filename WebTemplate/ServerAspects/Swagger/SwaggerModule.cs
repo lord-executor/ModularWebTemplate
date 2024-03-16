@@ -30,7 +30,13 @@ public class SwaggerModule : IAppConfigurationModule
 
 	public void ConfigureApplication(WebApplication app)
 	{
-		if (app.Environment.IsDevelopment())
+		// OpenApi documents and the Swagger UI should generally not be exposed in production environments based
+		// on the assumption that production environments are _publicly_ accessible. That is not always the case
+		// and for somewhat protected scenarios, exposing the API documentation can be very helpful which is why
+		// we are not using the default "IsDevelopment" check, but instead provide an environment variable that
+		// can be used to disable Swagger when necessary. Undocumented APIs are just not that useful.
+		//if (app.Environment.IsDevelopment())
+		if (Environment.GetEnvironmentVariable("SVC_DISALBE_SWAGGER") != "1")
 		{
 			app.UseSwagger();
 			app.UseSwaggerUI();
