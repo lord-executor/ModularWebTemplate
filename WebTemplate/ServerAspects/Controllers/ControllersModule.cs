@@ -1,4 +1,4 @@
-namespace WebTemplate.ServerAspects.Controllers;
+﻿namespace WebTemplate.ServerAspects.Controllers;
 
 public class ControllersModule : IAppConfigurationModule
 {

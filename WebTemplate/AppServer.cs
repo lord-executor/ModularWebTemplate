@@ -18,14 +18,15 @@ public class AppServer
     /// </summary>
     private readonly IList<IAppConfigurationModule> _modules = new List<IAppConfigurationModule>
     {
-        new JsonModule(),
         new AuthModule(),
         new CorsModule(),
+        new JsonModule(),
         new SwaggerModule(),
-        new SpaRoutingModule(),
         new ValidationModule(),
         new StatusEndpointModule(),
         new ControllersModule(),
+        // Keep the SpaRoutingModule at the very end
+        new SpaRoutingModule(),
     };
 
     public void Start(string[] args)

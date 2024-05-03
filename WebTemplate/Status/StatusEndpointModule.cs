@@ -1,4 +1,4 @@
-namespace WebTemplate.Status;
+﻿namespace WebTemplate.Status;
 
 public class StatusEndpointModule : IAppConfigurationModule
 {
