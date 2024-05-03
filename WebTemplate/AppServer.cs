@@ -23,7 +23,7 @@ public class AppServer
         new JsonModule(),
         new SwaggerModule(),
         new ValidationModule(),
-        new StatusEndpointModule(),
+        new StatusEndpointModule(_ => new GitVersionInfo()),
         new ControllersModule(),
         // Keep the SpaRoutingModule at the very end
         new SpaRoutingModule(),
