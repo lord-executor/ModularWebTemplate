@@ -61,6 +61,6 @@ public class AppServer
 
     private void SetupConfiguration(ConfigurationManager configuration, IWebHostEnvironment env)
     {
-        configuration.AddJsonFile($"~/{env.ApplicationName}.json", optional: true);
+        configuration.AddJsonFile($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/{env.ApplicationName}.json", optional: true);
     }
 }
