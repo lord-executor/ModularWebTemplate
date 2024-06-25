@@ -1,6 +1,7 @@
 ﻿using WebTemplate.ServerAspects.Auth;
 using WebTemplate.ServerAspects.Controllers;
 using WebTemplate.ServerAspects.Cors;
+using WebTemplate.ServerAspects.DataProtection;
 using WebTemplate.ServerAspects.Json;
 using WebTemplate.ServerAspects.Spa;
 using WebTemplate.ServerAspects.Swagger;
@@ -27,6 +28,7 @@ public class AppServer
         new ControllersModule(),
         // Keep the SpaRoutingModule at the very end
         new SpaRoutingModule(),
+        new DataProtectionModule()
     };
 
     public void Start(string[] args)
