@@ -11,14 +11,14 @@ namespace WebTemplate.ServerAspects.Validation;
 /// </summary>
 public class ValidationModule : IAppConfigurationModule
 {
-    public void ConfigureServices(IServiceCollection services, IConfigurationRoot config)
+    public void ConfigureServices(ServiceConfigurationContext ctx)
     {
         // If you add a validator as described in https://github.com/FluentValidation/FluentValidation?tab=readme-ov-file
         // that validator should automatically be registered with this.
-        services.AddValidatorsFromAssemblyContaining(typeof(ValidationModule));
+        ctx.Services.AddValidatorsFromAssemblyContaining(typeof(ValidationModule));
     }
 
-    public void ConfigureApplication(WebApplication app)
+    public void ConfigureApplication(ApplicationConfigurationContext ctx)
     {
     }
 }

@@ -8,13 +8,13 @@ namespace WebTemplate.ServerAspects.Spa;
 /// </summary>
 public class SpaRoutingModule : IAppConfigurationModule
 {
-	public void ConfigureServices(IServiceCollection services, IConfigurationRoot config)
+	public void ConfigureServices(ServiceConfigurationContext ctx)
 	{
 	}
 
-	public void ConfigureApplication(WebApplication app)
+	public void ConfigureApplication(ApplicationConfigurationContext ctx)
 	{
-		app.UseMiddleware<SpaDefaultPageMiddleware>();
-		app.UseStaticFiles();
+		ctx.App.UseMiddleware<SpaDefaultPageMiddleware>();
+		ctx.App.UseStaticFiles();
 	}
 }

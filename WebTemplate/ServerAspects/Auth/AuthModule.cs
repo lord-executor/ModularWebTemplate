@@ -5,11 +5,11 @@ namespace WebTemplate.ServerAspects.Auth;
 
 public class AuthModule : IAppConfigurationModule
 {
-	public void ConfigureServices(IServiceCollection services, IConfigurationRoot config)
+	public void ConfigureServices(ServiceConfigurationContext ctx)
 	{
 		// GetRequiredSection throws an exception if the section is missing, so authOptions always has a value
-		var authOptions = config.GetRequiredSection(AuthSettings.SectionName).Get<AuthSettings>()!;
-		services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+		var authOptions = ctx.Configuration.GetRequiredSection(AuthSettings.SectionName).Get<AuthSettings>()!;
+        ctx.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			.AddJwtBearer(options =>
 			{
 				options.Authority = authOptions.Authority;
@@ -20,7 +20,7 @@ public class AuthModule : IAppConfigurationModule
 				};
 			});
 
-		services.AddAuthorization(authorizationOptions =>
+        ctx.Services.AddAuthorization(authorizationOptions =>
 		{
 			foreach (var policyPair in authOptions.PolicyClaims)
 			{
@@ -30,8 +30,8 @@ public class AuthModule : IAppConfigurationModule
 		});
 	}
 
-	public void ConfigureApplication(WebApplication app)
+	public void ConfigureApplication(ApplicationConfigurationContext ctx)
 	{
-		app.UseAuthorization();
+		ctx.App.UseAuthorization();
 	}
 }

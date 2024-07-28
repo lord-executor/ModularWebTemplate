@@ -4,9 +4,9 @@ namespace WebTemplate.ServerAspects.Json;
 
 public class JsonModule : IAppConfigurationModule
 {
-    public void ConfigureServices(IServiceCollection services, IConfigurationRoot config)
+    public void ConfigureServices(ServiceConfigurationContext ctx)
     {
-        services.ConfigureHttpJsonOptions(opts =>
+        ctx.Services.ConfigureHttpJsonOptions(opts =>
         {
             // Convert enums as their string values instead of integer values
             var enumConverter = new JsonStringEnumConverter();
@@ -14,7 +14,7 @@ public class JsonModule : IAppConfigurationModule
         });
     }
 
-    public void ConfigureApplication(WebApplication app)
+    public void ConfigureApplication(ApplicationConfigurationContext ctx)
     {
     }
 }

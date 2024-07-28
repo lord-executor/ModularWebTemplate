@@ -52,9 +52,10 @@ public class AppServer
         var builder = WebApplication.CreateBuilder(args);
         SetupConfiguration(builder.Configuration, builder.Environment);
 
+        var serviceConfigCtx = new ServiceConfigurationContext(builder, _versionInfo);
         foreach (var appConfigurationModule in _modules)
         {
-            appConfigurationModule.ConfigureServices(builder.Services, builder.Configuration);
+            appConfigurationModule.ConfigureServices(serviceConfigCtx);
         }
 
         var app = builder.Build();
@@ -69,9 +70,10 @@ public class AppServer
             app.UseHsts();
         }
 
+        var appConfigCtx = new ApplicationConfigurationContext(app, _versionInfo);
         foreach (var appConfigurationModule in _modules)
         {
-            appConfigurationModule.ConfigureApplication(app);
+            appConfigurationModule.ConfigureApplication(appConfigCtx);
         }
 
         app.Run();

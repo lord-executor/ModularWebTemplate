@@ -8,17 +8,17 @@ public class StatusEndpointModule : IAppConfigurationModule
     {
         _versionProvider = versionProvider;
     }
-    
-    public void ConfigureServices(IServiceCollection services, IConfigurationRoot config)
+
+    public void ConfigureServices(ServiceConfigurationContext ctx)
     {
-        services.AddTransient<IVersionInfo>(_versionProvider);
+        ctx.Services.AddTransient<IVersionInfo>(_versionProvider);
     }
 
-    public void ConfigureApplication(WebApplication app)
+    public void ConfigureApplication(ApplicationConfigurationContext ctx)
     {
         var reporter = new StatusReporter();
 
-        app.MapGet("v1/status", (IVersionInfo version, IServiceProvider serviceProvider) => new ServiceStatus("OK", version, reporter.StatusReport(serviceProvider)))
+        ctx.App.MapGet("v1/status", (IVersionInfo version, IServiceProvider serviceProvider) => new ServiceStatus("OK", version, reporter.StatusReport(serviceProvider)))
             .WithName("StatusService")
             .WithOpenApi(operation =>
             {

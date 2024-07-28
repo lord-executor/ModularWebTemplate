@@ -4,11 +4,11 @@ namespace WebTemplate.ServerAspects.Swagger;
 
 public class SwaggerModule : IAppConfigurationModule
 {
-	public void ConfigureServices(IServiceCollection services, IConfigurationRoot config)
+	public void ConfigureServices(ServiceConfigurationContext ctx)
 	{
 		// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-		services.AddEndpointsApiExplorer();
-		services.AddSwaggerGen(swaggerGen =>
+        ctx.Services.AddEndpointsApiExplorer();
+        ctx.Services.AddSwaggerGen(swaggerGen =>
 		{
 			swaggerGen.SupportNonNullableReferenceTypes();
 			swaggerGen.EnableAnnotations();
@@ -16,7 +16,7 @@ public class SwaggerModule : IAppConfigurationModule
 			// the OpenApi document. This assumes that the JSON serializer has ben configured to use the
 			// JsonStringEnumConverter - the two play hand-in-hand.
 			swaggerGen.SchemaFilter<StringEnumSchemaFilter>();
-			
+
 			// This requires the <GenerateDocumentationFile> property to be set to true in the
 			// .csrpoj file
 			var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -28,7 +28,7 @@ public class SwaggerModule : IAppConfigurationModule
 		});
 	}
 
-	public void ConfigureApplication(WebApplication app)
+	public void ConfigureApplication(ApplicationConfigurationContext ctx)
 	{
 		// OpenApi documents and the Swagger UI should generally not be exposed in production environments based
 		// on the assumption that production environments are _publicly_ accessible. That is not always the case
@@ -38,8 +38,8 @@ public class SwaggerModule : IAppConfigurationModule
 		//if (app.Environment.IsDevelopment())
 		if (Environment.GetEnvironmentVariable("SVC_DISALBE_SWAGGER") != "1")
 		{
-			app.UseSwagger();
-			app.UseSwaggerUI();
+			ctx.App.UseSwagger();
+			ctx.App.UseSwaggerUI();
 		}
 	}
 }

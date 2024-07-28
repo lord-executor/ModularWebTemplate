@@ -2,10 +2,10 @@ namespace WebTemplate.ServerAspects.Cors;
 
 public class CorsModule : IAppConfigurationModule
 {
-	public void ConfigureServices(IServiceCollection services, IConfigurationRoot config)
+	public void ConfigureServices(ServiceConfigurationContext ctx)
 	{
-		var corsSettings = config.GetRequiredSection(CorsSettings.SectionName).Get<CorsSettings>()!;
-		services.AddCors(options =>
+		var corsSettings = ctx.Configuration.GetRequiredSection(CorsSettings.SectionName).Get<CorsSettings>()!;
+        ctx.Services.AddCors(options =>
 		{
 			options.AddDefaultPolicy(policy =>
 			{
@@ -17,8 +17,8 @@ public class CorsModule : IAppConfigurationModule
 		});
 	}
 
-	public void ConfigureApplication(WebApplication app)
+	public void ConfigureApplication(ApplicationConfigurationContext ctx)
 	{
-		app.UseCors();
+		ctx.App.UseCors();
 	}
 }

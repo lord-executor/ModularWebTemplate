@@ -2,14 +2,14 @@
 
 public class ControllersModule : IAppConfigurationModule
 {
-    public void ConfigureServices(IServiceCollection services, IConfigurationRoot config)
+    public void ConfigureServices(ServiceConfigurationContext ctx)
     {
-        services.AddControllers();
-        services.Configure<ApiSettings>(config.GetSection(ApiSettings.SectionName));
+        ctx.Services.AddControllers();
+        ctx.Services.Configure<ApiSettings>(ctx.Configuration.GetSection(ApiSettings.SectionName));
     }
 
-    public void ConfigureApplication(WebApplication app)
+    public void ConfigureApplication(ApplicationConfigurationContext ctx)
     {
-        app.MapControllers();
+        ctx.App.MapControllers();
     }
 }
