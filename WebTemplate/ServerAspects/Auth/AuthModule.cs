@@ -9,6 +9,15 @@ public class AuthModule : IAppConfigurationModule
 	{
 		// GetRequiredSection throws an exception if the section is missing, so authOptions always has a value
 		var authOptions = ctx.Configuration.GetRequiredSection(AuthSettings.SectionName).Get<AuthSettings>()!;
+        if (string.IsNullOrEmpty(authOptions.Authority))
+        {
+            throw new AppConfigException("Missing Authority configuration Auth.Authority");
+        }
+        if (string.IsNullOrEmpty(authOptions.Audience))
+        {
+            throw new AppConfigException("Missing Audience configuration Auth.Audience");
+        }
+
         ctx.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			.AddJwtBearer(options =>
 			{
