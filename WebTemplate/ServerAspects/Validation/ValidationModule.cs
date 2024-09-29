@@ -8,6 +8,8 @@ namespace WebTemplate.ServerAspects.Validation;
 /// <code>
 ///   .AddEndpointFilter&lt;ValidationFilter&lt;MyRequest&gt;&gt;()
 /// </code>
+/// And to keep the _explicit_ nature of validation, there is an analogous <see cref="ExplicitValidationAttribute{T}"/>
+/// that can be applied to MVC controller actions.
 /// </summary>
 public class ValidationModule : IAppConfigurationModule
 {
