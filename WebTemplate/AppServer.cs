@@ -25,6 +25,7 @@ public class AppServer
         _versionInfo = versionInfo;
         _modules = new List<IAppConfigurationModule>
         {
+            new ProxyAwareModule(),
             new AuthModule(),
             new CorsModule(),
             new JsonModule(),
