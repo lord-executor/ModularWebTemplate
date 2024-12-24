@@ -6,6 +6,7 @@ public interface IVersionInfo
     string AssemblyVersion { get; }
     string Version { get; }
     string Commit { get; }
+    string CommitDate { get; }
     string Branch { get; }
     bool IsDirty { get; }
 }
