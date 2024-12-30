@@ -60,7 +60,15 @@ public class AppServer
         }
 
         var app = builder.Build();
-        app.UseHttpsRedirection();
+
+        // Unfortunately, there is no reasonable way to determine the endpoints that will eventually be used before
+        // the server is actually running, at which point it is of course too late to configure HTTPS redirects.
+        // This means that we have two separate configurations that we have to keep aligned manually.
+        var useHttpsRedirection = app.Configuration.GetSection("UseHttpsRedirection").Get<bool>();
+        if (useHttpsRedirection)
+        {
+            app.UseHttpsRedirection();
+        }
 
         if (app.Environment.IsDevelopment())
         {
