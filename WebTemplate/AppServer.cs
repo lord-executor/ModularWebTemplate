@@ -5,6 +5,7 @@ using WebTemplate.ServerAspects.Controllers;
 using WebTemplate.ServerAspects.Cors;
 using WebTemplate.ServerAspects.Health;
 using WebTemplate.ServerAspects.Json;
+using WebTemplate.ServerAspects.Observability;
 using WebTemplate.ServerAspects.Spa;
 using WebTemplate.ServerAspects.Swagger;
 using WebTemplate.ServerAspects.Validation;
@@ -28,6 +29,7 @@ public class AppServer
         _versionInfo = versionInfo;
         _modules = new List<IAppConfigurationModule>
         {
+            new OpenTelemetryModule(_versionInfo),
             new ProxyAwareModule(),
             new AuthModule(),
             new CorsModule(),

@@ -5,4 +5,5 @@ public record ServiceConfigurationContext(WebApplicationBuilder Builder, IVersio
     public IServiceCollection Services => Builder.Services;
     public ConfigurationManager Configuration => Builder.Configuration;
     public IWebHostEnvironment Environment => Builder.Environment;
+    public ILoggingBuilder Logging => Builder.Logging;
 }
