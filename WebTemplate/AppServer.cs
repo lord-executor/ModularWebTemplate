@@ -1,6 +1,9 @@
-﻿using WebTemplate.ServerAspects.Auth;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+using WebTemplate.ServerAspects.Auth;
 using WebTemplate.ServerAspects.Controllers;
 using WebTemplate.ServerAspects.Cors;
+using WebTemplate.ServerAspects.Health;
 using WebTemplate.ServerAspects.Json;
 using WebTemplate.ServerAspects.Spa;
 using WebTemplate.ServerAspects.Swagger;
@@ -31,6 +34,7 @@ public class AppServer
             new JsonModule(),
             new SwaggerModule(),
             new ValidationModule(),
+            new HealthCheckModule(),
             new StatusEndpointModule(_ => _versionInfo),
             new ControllersModule(),
             // Keep the SpaRoutingModule at the very end
@@ -60,6 +64,7 @@ public class AppServer
         }
 
         var app = builder.Build();
+        RegiserStartupLifecycleHook(app);
 
         // Unfortunately, there is no reasonable way to determine the endpoints that will eventually be used before
         // the server is actually running, at which point it is of course too late to configure HTTPS redirects.
@@ -91,5 +96,18 @@ public class AppServer
     private void SetupConfiguration(ConfigurationManager configuration, IWebHostEnvironment env)
     {
         configuration.AddJsonFile($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/{env.ApplicationName}.json", optional: true);
+    }
+
+    /// <summary>
+    /// All we really want to do here is log the container name and version after the service has been successfully bootstrapped.
+    /// </summary>
+    private void RegiserStartupLifecycleHook(WebApplication app)
+    {
+        // See https://andrewlock.net/finding-the-urls-of-an-aspnetcore-app-from-a-hosted-service-in-dotnet-6/
+        var hostApplicationLifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
+        hostApplicationLifetime.ApplicationStarted.Register(() =>
+        {
+            app.Logger.LogInformation("Started {container} {version}", _versionInfo.AssemblyName, _versionInfo.Version);
+        });
     }
 }
