@@ -20,7 +20,7 @@ public class StatusEndpointModule : IAppConfigurationModule
 
         ctx.App.MapGet("v1/status", (IVersionInfo version, IServiceProvider serviceProvider) => new ServiceStatus("OK", version, reporter.StatusReport(serviceProvider)))
             .WithName("StatusService")
-            .WithOpenApi(operation =>
+            .AddOpenApiOperationTransformer((operation, _, _) =>
             {
                 operation.Description =
                     """
@@ -28,7 +28,7 @@ public class StatusEndpointModule : IAppConfigurationModule
                     as a health check endpoint.
                     """;
 
-                return operation;
+                return Task.CompletedTask;
             });
     }
 }

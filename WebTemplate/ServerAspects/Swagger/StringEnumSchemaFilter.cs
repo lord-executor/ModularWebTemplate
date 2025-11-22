@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
+using System.Text.Json.Nodes;
+
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebTemplate.ServerAspects.Swagger;
@@ -14,14 +15,17 @@ namespace WebTemplate.ServerAspects.Swagger;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class StringEnumSchemaFilter : ISchemaFilter
 {
-    public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+    public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
     {
         var type = context.Type;
         if (type.IsEnum)
         {
-            schema.Type = "string";
-            schema.Format = null;
-            schema.Enum = Enum.GetNames(type).Select(name => new OpenApiString(name)).Cast<IOpenApiAny>().ToList();
+            schema.Enum!.Clear();
+            foreach (var name in Enum.GetNames(type))
+            {
+                schema.Enum.Add(JsonValue.Create(name));
+            }
+
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static);
 
             var description = new StringWriter();
